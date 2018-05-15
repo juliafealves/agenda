@@ -28,7 +28,7 @@ public class AgendaTest {
      */
     @Test
     public void testCadastraContato() {
-        boolean sucesso = this.agenda.cadastraContato(50, "Maria", "Rita", this.telefones);
+        boolean sucesso = this.agenda.cadastraContato(50, "Maria", "Rita", this.telefones, Contato.AMIGAO);
         Assert.assertTrue(sucesso);
     }
 
@@ -38,7 +38,7 @@ public class AgendaTest {
      */
     @Test
     public void testCadastraContatoPosicaoLimiteInicial(){
-        boolean sucesso = this.agenda.cadastraContato(1, "Caetano", "Veloso", this.telefones);
+        boolean sucesso = this.agenda.cadastraContato(1, "Caetano", "Veloso", this.telefones, Contato.AMIGAO);
         Assert.assertTrue(sucesso);
     }
 
@@ -48,7 +48,7 @@ public class AgendaTest {
      */
     @Test
     public void testCadastraContatoPosicaoLimiteFinal(){
-        boolean sucesso = this.agenda.cadastraContato(100, "Raul", "Seixas", this.telefones);
+        boolean sucesso = this.agenda.cadastraContato(100, "Raul", "Seixas", this.telefones, Contato.DISTANTE);
         Assert.assertTrue(sucesso);
     }
 
@@ -58,7 +58,7 @@ public class AgendaTest {
      */
     @Test (expected = IndexOutOfBoundsException.class)
     public void testCadastraContatoPosicaoInvalidaNegativa(){
-        this.agenda.cadastraContato(-1, "Roberto", "Carlos", this.telefones);
+        this.agenda.cadastraContato(-1, "Roberto", "Carlos", this.telefones, Contato.IRMAO);
     }
 
     /**
@@ -67,7 +67,7 @@ public class AgendaTest {
      */
     @Test (expected = IndexOutOfBoundsException.class)
     public void testCadastraContatoPosicaoInvalidaAcimaLimite(){
-        this.agenda.cadastraContato(101, "Elis", "Regina", this.telefones);
+        this.agenda.cadastraContato(101, "Elis", "Regina", this.telefones, Contato.COLEGA);
     }
 
     /**
@@ -75,7 +75,7 @@ public class AgendaTest {
      */
     @Test (expected = IllegalArgumentException.class)
     public void testCadastraContatoNomeNulo(){
-        this.agenda.cadastraContato(5, null, "Regina", this.telefones);
+        this.agenda.cadastraContato(5, null, "Regina", this.telefones, Contato.IRMAO);
     }
 
     /**
@@ -83,7 +83,7 @@ public class AgendaTest {
      */
     @Test (expected = IllegalArgumentException.class)
     public void testCadastraContatoNomeVazio(){
-        this.agenda.cadastraContato(5, "", "Regina", this.telefones);
+        this.agenda.cadastraContato(5, "", "Regina", this.telefones, Contato.AMIGAO);
     }
 
     /**
@@ -91,7 +91,7 @@ public class AgendaTest {
      */
     @Test (expected = IllegalArgumentException.class)
     public void testCadastraContatoSobrenomeNulo(){
-        this.agenda.cadastraContato(5, "Elis", null, this.telefones);
+        this.agenda.cadastraContato(5, "Elis", null, this.telefones, Contato.AMIGAO);
     }
 
     /**
@@ -99,7 +99,7 @@ public class AgendaTest {
      */
     @Test (expected = IllegalArgumentException.class)
     public void testCadastraContatoSobrenomeVazio(){
-        this.agenda.cadastraContato(5, "Elis", "", this.telefones);
+        this.agenda.cadastraContato(5, "Elis", "", this.telefones, Contato.AMIGAO);
     }
 
     /**
@@ -107,7 +107,7 @@ public class AgendaTest {
      */
     @Test (expected = IllegalArgumentException.class)
     public void testCadastraContatoTelefoneNulo(){
-        this.agenda.cadastraContato(5, "Elis", "Regina", null);
+        this.agenda.cadastraContato(5, "Elis", "Regina", null, Contato.AMIGAO);
     }
 
     /**
@@ -115,7 +115,7 @@ public class AgendaTest {
      */
     @Test (expected = IllegalArgumentException.class)
     public void testCadastraContatoTelefonesVazio(){
-        this.agenda.cadastraContato(5, "Elis", "Regina",  new Telefone[3]);
+        this.agenda.cadastraContato(5, "Elis", "Regina",  new Telefone[3], Contato.AMIGAO);
     }
 
     /**
@@ -125,7 +125,7 @@ public class AgendaTest {
     public void testCadastraContatoTelefonesComTelefoneNulo(){
         telefones = new Telefone[3];
         telefones[0] = new Telefone(55, 83, null, Telefone.CELULAR);
-        this.agenda.cadastraContato(5, "Elis", "Regina",  telefones);
+        this.agenda.cadastraContato(5, "Elis", "Regina",  telefones, Contato.AMIGAO);
     }
 
     /**
@@ -135,7 +135,16 @@ public class AgendaTest {
     public void testCadastraContatoTelefonesComTelefoneVazio(){
         telefones = new Telefone[3];
         telefones[0] = new Telefone(55, 83, "", Telefone.CELULAR);
-        this.agenda.cadastraContato(5, "Elis", "Regina",  telefones);
+        this.agenda.cadastraContato(5, "Elis", "Regina",  telefones, Contato.AMIGAO);
+    }
+
+    /**
+     * Verifica se ocorre erro quando inserido contato com nível de amizade inválido. É considerado válido nível de
+     * amizade de 1 a 5.
+     */
+    @Test (expected = IllegalArgumentException.class)
+    public void testCadastraContatoNivelAmizadeInvalido(){
+        this.agenda.cadastraContato(5, null, "Regina", this.telefones, 6);
     }
 
     /**
@@ -144,7 +153,7 @@ public class AgendaTest {
     @Test
     public void testLocalizaContatoPorPosicao(){
         String contato = "Chico Buarque - +55 (83) 4444-4444 [CELULAR]";
-        this.agenda.cadastraContato(7, "Chico", "Buarque", this.telefones);
+        this.agenda.cadastraContato(7, "Chico", "Buarque", this.telefones, Contato.AMIGAO);
 
         Assert.assertEquals(contato, this.agenda.localizaContato(7));
     }
@@ -155,7 +164,7 @@ public class AgendaTest {
      */
     @Test  (expected = NullPointerException.class)
     public void testLocalizaContatoNaoExistente(){
-        this.agenda.cadastraContato(7, "Chico", "Buarque", this.telefones);
+        this.agenda.cadastraContato(7, "Chico", "Buarque", this.telefones, Contato.AMIGAO);
         this.agenda.localizaContato(10);
     }
 
@@ -182,8 +191,8 @@ public class AgendaTest {
      */
     @Test
     public void testCadastraContatoPosicaoExistente(){
-        this.agenda.cadastraContato(7, "Oswaldo", "Montenegro", this.telefones);
-        this.agenda.cadastraContato(7, "Chico", "Buarque", this.telefones);
+        this.agenda.cadastraContato(7, "Oswaldo", "Montenegro", this.telefones, Contato.AMIGAO);
+        this.agenda.cadastraContato(7, "Chico", "Buarque", this.telefones, Contato.AMIGAO);
 
         String contato = "Chico Buarque - +55 (83) 4444-4444 [CELULAR]";
         Assert.assertEquals(contato, this.agenda.localizaContato(7));
@@ -194,8 +203,8 @@ public class AgendaTest {
      */
     @Test
     public void testListaContatos(){
-        this.agenda.cadastraContato(10, "Milton", "Nascimento", this.telefones);
-        this.agenda.cadastraContato(20, "Renato", "Russo", this.telefones);
+        this.agenda.cadastraContato(10, "Milton", "Nascimento", this.telefones, Contato.AMIGAO);
+        this.agenda.cadastraContato(20, "Renato", "Russo", this.telefones, Contato.AMIGAO);
 
         String listagem = "10 - Milton Nascimento" + System.lineSeparator() + "20 - Renato Russo" + System.lineSeparator();
         Assert.assertEquals(listagem, this.agenda.listaContato());

@@ -98,9 +98,12 @@ public class Menu {
             String nome = scanner.nextLine().trim();
             System.out.print("Sobrenome: ");
             String sobrenome = scanner.nextLine().trim();
+            System.out.print("Nivel de Amizade ([1] Distante, [2] Colega, [3] Amigo, [4] Amigão, [5] Irmão): ");
+            int nivelAmizade = scanner.nextInt();
+            scanner.nextLine();
             Telefone[] telefones = Menu.adicionarTelefones(scanner);
 
-            if (agenda.cadastraContato(posicao,nome, sobrenome, telefones)){
+            if (agenda.cadastraContato(posicao,nome, sobrenome, telefones, nivelAmizade)){
                 System.out.println("CADASTRO REALIZADO!");
             }
         }catch (Exception exception){
@@ -116,7 +119,7 @@ public class Menu {
      */
     private static Telefone[] adicionarTelefones(Scanner scanner){
         Telefone[] telefones = new Telefone[3];
-        String opcao;
+        String opcao = "S";
         int qtdTelefone = 1;
 
         do{
@@ -132,11 +135,13 @@ public class Menu {
             System.out.print("Tipo ([1] CELULAR, [2] TRABALHO, [3] CASA): ");
             int tipo = scanner.nextInt();
 
-            System.out.print("Deseja adicionar outro telefone? [S]im ou [N]ão> ");
-
-            opcao = scanner.next().toUpperCase();
             telefones[qtdTelefone - 1] = new Telefone(codigoPais, ddd, numero, tipo);
             qtdTelefone++;
+
+            if (qtdTelefone < 4) {
+                System.out.print("Deseja adicionar outro telefone? [S]im ou [N]ão> ");
+                opcao = scanner.next().toUpperCase();
+            }
         } while (!opcao.equals("N") && qtdTelefone < 4);
 
         return telefones;

@@ -27,9 +27,10 @@ public class Agenda {
      * @param nome Primeiro nome do contato.
      * @param sobrenome Sobrenome do contato.
      * @param telefones Número do telefone do contato
+     * @param nivelAmizade Nível de amizade 1: distante, 2: colega, 3: amigo, 4: amigão, 5: irmão.
      * @return boolean Retorna o valor booleano "true" em caso de sucesso.
      */
-    public boolean cadastraContato(int posicao, String nome, String sobrenome, Telefone[] telefones) {
+    public boolean cadastraContato(int posicao, String nome, String sobrenome, Telefone[] telefones, int nivelAmizade) {
         if(posicao < 1 || posicao > 100 )
             throw new IndexOutOfBoundsException("POSIÇÃO INVÁLIDA!");
 
@@ -39,7 +40,10 @@ public class Agenda {
         if(!this.validaTelefones(telefones))
             throw new IllegalArgumentException("Necessário cadastrar ao menos um telefone.");
 
-        contatos[--posicao] = new Contato(nome, sobrenome, telefones);
+        if(nivelAmizade < 1 || nivelAmizade > 5)
+            throw new IllegalArgumentException("Nível de amizade inválido.");
+
+        contatos[--posicao] = new Contato(nome, sobrenome, telefones, nivelAmizade);
 
         return true;
     }
@@ -84,7 +88,7 @@ public class Agenda {
     }
 
     /**
-     * Verifica se um telefone foi adicionado ao contato.
+     * Verifica se um telefone foi adicionado ao contato. Deverá existir ao menos um telefone cadastrado.
      *
      * @param telefones
      * @return

@@ -32,6 +32,16 @@ public class ContatoTest {
     }
 
     /**
+     * Verifica se um contato com nível de amizado associado foi criado com sucesso.
+     */
+    @Test
+    public void testContatoComNivelAmizade() {
+        Telefone[] telefones = new Telefone[3];
+        telefones[0] = new Telefone(55, 88, "6565-9898", Telefone.TRABALHO);
+        new Contato("Elis", "Regina", telefones, Contato.COLEGA);
+    }
+
+    /**
      * Verifica se o toString está formato corretamente, com nome sobrenome e telefone.
      */
     @Test
