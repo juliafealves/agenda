@@ -1,5 +1,7 @@
 package agenda;
 
+import java.util.Arrays;
+
 /**
  * Classe Agenda responsável por gerenciar Contato da agenda.
  * @author Júlia Fernandes Alves 117211383 <julia.alves@ccc.ufcg.edu.br>
@@ -86,5 +88,13 @@ public class Contato {
      */
     public String getNomeCompleto() {
         return this.nome + " " + this.sobrenome;
+    }
+
+    /**
+     * Retorna o primeiro nome do contato.
+     * @return
+     */
+    public String getNome() {
+        return this.nome;
     }
 }

@@ -39,11 +39,60 @@ public class Menu {
                 Menu.listaContatos();
             }else if(opcao.equals("E")){
                 Menu.exibeContato(scanner);
+            }else if(opcao.equals("P")){
+                Menu.pesquisaContatoPorNome(scanner);
+            }else if(opcao.equals("B")){
+                Menu.buscarContato(scanner);
             } else if(!opcao.equals("S")) {
                 System.out.println("OPÇÃO INVÁLIDA!");
             }
 
         } while (!opcao.equals("S"));
+    }
+
+    /**
+     * Busca um contato específico pelo nome.
+     * @param scanner
+     */
+    private static void buscarContato(Scanner scanner) {
+        try {
+            System.out.print("Nome> ");
+            scanner.nextLine();
+            String nome = scanner.nextLine().trim();
+
+            String contato = agenda.buscaContato(nome);
+
+            if (!contato.isEmpty()) {
+                System.out.println(contato);
+            } else {
+                System.out.println("Nenhum contato encontrado encontrado com o nome: " + nome);
+            }
+        }catch(Exception exception){
+            System.out.println(exception.getMessage());
+        }
+    }
+
+    /**
+     * Pesquisa os contatos da agenda pelo nome.
+     *
+     * @param scanner
+     */
+    private static void pesquisaContatoPorNome(Scanner scanner) {
+        try {
+            System.out.print("Palavra-chave> ");
+            scanner.nextLine();
+            String palavraChave = scanner.nextLine().trim();
+
+            String contatos = agenda.pesquisaNomeCompleto(palavraChave);
+
+            if (!contatos.isEmpty()) {
+                System.out.println(contatos);
+            } else {
+                System.out.println("Nenhum contato encontrado encontrado com a palavra-chave: " + palavraChave);
+            }
+        }catch(Exception exception){
+            System.out.println(exception.getMessage());
+        }
     }
 
     /**
@@ -157,7 +206,8 @@ public class Menu {
      */
     private static void exibeMenu(){
         String menu = System.lineSeparator();
-        String[] opcoes = {"(C)adastrar Contato", "(L)istar Contatos", "(E)xibir Contato", "(S)air"};
+        String[] opcoes = {"(C)adastrar Contato", "(L)istar Contatos", "(E)xibir Contato",
+                "(P)esquisar Contato Por Nome/Sobrenome", "(B)uscar Contato", "(S)air"};
 
         for(String opcao: opcoes){
             menu += opcao + System.lineSeparator();

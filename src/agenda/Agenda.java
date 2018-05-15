@@ -102,4 +102,44 @@ public class Agenda {
 
         return false;
     }
+
+    /**
+     * Retorna todos os contatos que contenha alguma parte da palavra-chave.
+     * Busca pelo nome e sobrenome.
+     *
+     * @param palavraChave Palavra-chave a ser localizada.
+     * @return
+     */
+    public String pesquisaNomeCompleto(String palavraChave) {
+        if(palavraChave == null || palavraChave.isEmpty())
+            throw new IllegalArgumentException("Informe uma palavra-chave válida.");
+
+        String contatos = "";
+
+        for(int i = 0; i < this.contatos.length; i++){
+            if(this.contatos[i] != null && this.contatos[i].getNomeCompleto().contains(palavraChave)){
+                contatos += (i + 1) + " - " + this.contatos[i].getNomeCompleto() + System.lineSeparator();
+            }
+        }
+
+        return contatos;
+    }
+
+    /**
+     * Busca um contato pelo nome.
+     * @param nome
+     * @return
+     */
+    public String buscaContato(String nome) {
+        if(nome == null || nome.isEmpty())
+            throw new IllegalArgumentException("Informe um nome válido.");
+
+        for(int i = 0; i < this.contatos.length; i++){
+            if(this.contatos[i] != null && this.contatos[i].getNome().equals(nome)){
+                return  (i + 1) + " - " + this.contatos[i].toString() + System.lineSeparator();
+            }
+        }
+
+        return "";
+    }
 }

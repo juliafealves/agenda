@@ -209,4 +209,62 @@ public class AgendaTest {
         String listagem = "10 - Milton Nascimento" + System.lineSeparator() + "20 - Renato Russo" + System.lineSeparator();
         Assert.assertEquals(listagem, this.agenda.listaContato());
     }
+
+    /**
+     * Verifica se a pesquisa por nome completo através de uma palavra-chave está correta.
+     */
+    @Test
+    public void testPesquisaContatoNomeCompleto(){
+        this.agenda.cadastraContato(10, "Elba", "Ramalho", this.telefones, Contato.AMIGAO);
+        this.agenda.cadastraContato(20, "Zé", "Ramalho", this.telefones, Contato.AMIGAO);
+
+        String busca = "10 - Elba Ramalho" + System.lineSeparator() + "20 - Zé Ramalho" + System.lineSeparator();
+        Assert.assertEquals(busca, this.agenda.pesquisaNomeCompleto("Ramalho"));
+    }
+
+    /**
+     * Verifica se ocorre erro ao buscar contatos com palavra-chave vazia.
+     */
+    @Test (expected = IllegalArgumentException.class)
+    public void testPesquisaContatoNomeCompletoPalavraChaveVazio(){
+        this.agenda.pesquisaNomeCompleto("");
+    }
+
+    /**
+     * Verifica se ocorre erro ao buscar contatos com palavra-chave nula.
+     */
+    @Test (expected = IllegalArgumentException.class)
+    public void testPesquisaContatoNomeCompletoPalavraChaveNull(){
+        this.agenda.pesquisaNomeCompleto(null);
+    }
+
+    /**
+     * Verifica se a pesquisa por nome completo através de uma palavra-chave está correta.
+     */
+    @Test
+    public void testBuscaContato(){
+        this.agenda.cadastraContato(10, "Elba", "Ramalho", this.telefones, Contato.AMIGAO);
+        this.agenda.cadastraContato(20, "Zé", "Ramalho", this.telefones, Contato.AMIGAO);
+
+        String busca = "10 - Elba Ramalho - +55 (83) 4444-4444 [CELULAR]" + System.lineSeparator();
+        Assert.assertEquals(busca, this.agenda.buscaContato("Elba"));
+    }
+
+    /**
+     * Verifica se ocorre erro ao buscar contatos com palavra-chave vazia.
+     */
+    @Test (expected = IllegalArgumentException.class)
+    public void testBuscaContatoPorNomeVazio(){
+        this.agenda.buscaContato("");
+    }
+
+    /**
+     * Verifica se ocorre erro ao buscar contatos com palavra-chave nula.
+     */
+    @Test (expected = IllegalArgumentException.class)
+    public void testBuscaContatoPorNomeNulo(){
+        this.agenda.cadastraContato(10, "Elba", "Ramalho", this.telefones, Contato.AMIGAO);
+        this.agenda.cadastraContato(20, "Zé", "Ramalho", this.telefones, Contato.AMIGAO);
+        this.agenda.pesquisaNomeCompleto(null);
+    }
 }
