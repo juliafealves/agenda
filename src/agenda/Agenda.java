@@ -26,20 +26,20 @@ public class Agenda {
      * @param posicao Posição que será guardado o contato na agenda. Varia de 1 até 100.
      * @param nome Primeiro nome do contato.
      * @param sobrenome Sobrenome do contato.
-     * @param telefone Número do telefone do contato
+     * @param telefones Número do telefone do contato
      * @return boolean Retorna o valor booleano "true" em caso de sucesso.
      */
-    public boolean cadastraContato(int posicao, String nome, String sobrenome, String telefone) {
+    public boolean cadastraContato(int posicao, String nome, String sobrenome, Telefone[] telefones) {
         if(posicao < 1 || posicao > 100 )
             throw new IndexOutOfBoundsException("POSIÇÃO INVÁLIDA!");
 
         if(nome == null || nome.isEmpty() || sobrenome == null || sobrenome.isEmpty())
             throw new IllegalArgumentException("Nome e/ou sobrenome inválidos.");
 
-        if(telefone == null || telefone.isEmpty())
-            throw new IllegalArgumentException("Telefone inválido.");
+        if(!this.validaTelefones(telefones))
+            throw new IllegalArgumentException("Necessário cadastrar ao menos um telefone.");
 
-        contatos[--posicao] = new Contato(nome, sobrenome, telefone);
+        contatos[--posicao] = new Contato(nome, sobrenome, telefones);
 
         return true;
     }
@@ -81,5 +81,21 @@ public class Agenda {
         }
 
         return contatos;
+    }
+
+    /**
+     * Verifica se um telefone foi adicionado ao contato.
+     *
+     * @param telefones
+     * @return
+     */
+    private boolean validaTelefones(Telefone[] telefones){
+        if(telefones == null) return false;
+
+        for(Telefone telefone: telefones){
+            if(telefone != null) return true;
+        }
+
+        return false;
     }
 }

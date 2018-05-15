@@ -11,21 +11,24 @@ import org.junit.Test;
 public class AgendaTest {
 
     private Agenda agenda;
+    private Telefone[] telefones;
 
     /**
-     * Cria uma agenda a cada teste.
+     * Cria uma agenda para cada teste.
      */
     @Before
     public void criaAgenda(){
         this.agenda = new Agenda();
+        this.telefones = new Telefone[3];
+        this.telefones[0] = new Telefone(55, 83, "4444-4444", Telefone.CELULAR);
     }
 
     /**
      * Teste se um contato é cadastrado com sucesso.
      */
     @Test
-    public void testCadastraContato(){
-        boolean sucesso = this.agenda.cadastraContato(50, "Maria", "Rita", "(83) 4444-4444");
+    public void testCadastraContato() {
+        boolean sucesso = this.agenda.cadastraContato(50, "Maria", "Rita", this.telefones);
         Assert.assertTrue(sucesso);
     }
 
@@ -35,7 +38,7 @@ public class AgendaTest {
      */
     @Test
     public void testCadastraContatoPosicaoLimiteInicial(){
-        boolean sucesso = this.agenda.cadastraContato(1, "Caetano", "Veloso", "(83) 7777-7777");
+        boolean sucesso = this.agenda.cadastraContato(1, "Caetano", "Veloso", this.telefones);
         Assert.assertTrue(sucesso);
     }
 
@@ -45,7 +48,7 @@ public class AgendaTest {
      */
     @Test
     public void testCadastraContatoPosicaoLimiteFinal(){
-        boolean sucesso = this.agenda.cadastraContato(100, "Raul", "Seixas", "(83) 6666-6666");
+        boolean sucesso = this.agenda.cadastraContato(100, "Raul", "Seixas", this.telefones);
         Assert.assertTrue(sucesso);
     }
 
@@ -55,7 +58,7 @@ public class AgendaTest {
      */
     @Test (expected = IndexOutOfBoundsException.class)
     public void testCadastraContatoPosicaoInvalidaNegativa(){
-        this.agenda.cadastraContato(-1, "Roberto", "Carlos", "(83) 2222-2222");
+        this.agenda.cadastraContato(-1, "Roberto", "Carlos", this.telefones);
     }
 
     /**
@@ -64,7 +67,7 @@ public class AgendaTest {
      */
     @Test (expected = IndexOutOfBoundsException.class)
     public void testCadastraContatoPosicaoInvalidaAcimaLimite(){
-        this.agenda.cadastraContato(101, "Elis", "Regina", "(83) 1111-1111");
+        this.agenda.cadastraContato(101, "Elis", "Regina", this.telefones);
     }
 
     /**
@@ -72,7 +75,7 @@ public class AgendaTest {
      */
     @Test (expected = IllegalArgumentException.class)
     public void testCadastraContatoNomeNulo(){
-        this.agenda.cadastraContato(5, null, "Regina", "(83) 1111-1111");
+        this.agenda.cadastraContato(5, null, "Regina", this.telefones);
     }
 
     /**
@@ -80,7 +83,7 @@ public class AgendaTest {
      */
     @Test (expected = IllegalArgumentException.class)
     public void testCadastraContatoNomeVazio(){
-        this.agenda.cadastraContato(5, "", "Regina", "(83) 1111-1111");
+        this.agenda.cadastraContato(5, "", "Regina", this.telefones);
     }
 
     /**
@@ -88,7 +91,7 @@ public class AgendaTest {
      */
     @Test (expected = IllegalArgumentException.class)
     public void testCadastraContatoSobrenomeNulo(){
-        this.agenda.cadastraContato(5, "Elis", null, "(83) 1111-1111");
+        this.agenda.cadastraContato(5, "Elis", null, this.telefones);
     }
 
     /**
@@ -96,11 +99,11 @@ public class AgendaTest {
      */
     @Test (expected = IllegalArgumentException.class)
     public void testCadastraContatoSobrenomeVazio(){
-        this.agenda.cadastraContato(5, "Elis", "", "(83) 1111-1111");
+        this.agenda.cadastraContato(5, "Elis", "", this.telefones);
     }
 
     /**
-     * Verifica se ocorre erro quando inserido contato com telefone "nulo".
+     * Verifica se ocorre erro quando inserido contato com telefones "nulos".
      */
     @Test (expected = IllegalArgumentException.class)
     public void testCadastraContatoTelefoneNulo(){
@@ -108,11 +111,31 @@ public class AgendaTest {
     }
 
     /**
+     * Verifica se ocorre erro quando inserido contato sem nenhum telefone.
+     */
+    @Test (expected = IllegalArgumentException.class)
+    public void testCadastraContatoTelefonesVazio(){
+        this.agenda.cadastraContato(5, "Elis", "Regina",  new Telefone[3]);
+    }
+
+    /**
+     * Verifica se ocorre erro quando inserido contato com telefone nulo.
+     */
+    @Test (expected = IllegalArgumentException.class)
+    public void testCadastraContatoTelefonesComTelefoneNulo(){
+        telefones = new Telefone[3];
+        telefones[0] = new Telefone(55, 83, null, Telefone.CELULAR);
+        this.agenda.cadastraContato(5, "Elis", "Regina",  telefones);
+    }
+
+    /**
      * Verifica se ocorre erro quando inserido contato com telefone vazio.
      */
     @Test (expected = IllegalArgumentException.class)
-    public void testCadastraContatoTelefoneVazio(){
-        this.agenda.cadastraContato(5, "Elis", "Regina", "");
+    public void testCadastraContatoTelefonesComTelefoneVazio(){
+        telefones = new Telefone[3];
+        telefones[0] = new Telefone(55, 83, "", Telefone.CELULAR);
+        this.agenda.cadastraContato(5, "Elis", "Regina",  telefones);
     }
 
     /**
@@ -120,8 +143,8 @@ public class AgendaTest {
      */
     @Test
     public void testLocalizaContatoPorPosicao(){
-        String contato = "Chico Buarque - (83) 2323-2323";
-        this.agenda.cadastraContato(7, "Chico", "Buarque", "(83) 2323-2323");
+        String contato = "Chico Buarque - +55 (83) 4444-4444 [CELULAR]";
+        this.agenda.cadastraContato(7, "Chico", "Buarque", this.telefones);
 
         Assert.assertEquals(contato, this.agenda.localizaContato(7));
     }
@@ -132,7 +155,7 @@ public class AgendaTest {
      */
     @Test  (expected = NullPointerException.class)
     public void testLocalizaContatoNaoExistente(){
-        this.agenda.cadastraContato(7, "Chico", "Buarque", "(83) 2323-2323");
+        this.agenda.cadastraContato(7, "Chico", "Buarque", this.telefones);
         this.agenda.localizaContato(10);
     }
 
@@ -159,10 +182,10 @@ public class AgendaTest {
      */
     @Test
     public void testCadastraContatoPosicaoExistente(){
-        this.agenda.cadastraContato(7, "Oswaldo", "Montenegro", "(83) 8888-8888");
-        this.agenda.cadastraContato(7, "Chico", "Buarque", "(83) 2323-2323");
+        this.agenda.cadastraContato(7, "Oswaldo", "Montenegro", this.telefones);
+        this.agenda.cadastraContato(7, "Chico", "Buarque", this.telefones);
 
-        String contato = "Chico Buarque - (83) 2323-2323";
+        String contato = "Chico Buarque - +55 (83) 4444-4444 [CELULAR]";
         Assert.assertEquals(contato, this.agenda.localizaContato(7));
     }
 
@@ -171,8 +194,8 @@ public class AgendaTest {
      */
     @Test
     public void testListaContatos(){
-        this.agenda.cadastraContato(10, "Milton", "Nascimento", "(83) 8888-8888");
-        this.agenda.cadastraContato(20, "Renato", "Russo", "(83) 2323-2323");
+        this.agenda.cadastraContato(10, "Milton", "Nascimento", this.telefones);
+        this.agenda.cadastraContato(20, "Renato", "Russo", this.telefones);
 
         String listagem = "10 - Milton Nascimento" + System.lineSeparator() + "20 - Renato Russo" + System.lineSeparator();
         Assert.assertEquals(listagem, this.agenda.listaContato());

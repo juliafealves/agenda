@@ -15,7 +15,10 @@ public class ContatoTest {
      */
     @Before
     public void criaContato(){
-        this.contato = new Contato("Roberto", "Carlos", "(88) 6565-6565");
+        Telefone[] telefones = new Telefone[3];
+        telefones[0] = new Telefone(55, 88, "6565-9898", Telefone.TRABALHO);
+        telefones[1] = new Telefone(55, 88, "3333-8888", Telefone.CELULAR);
+        this.contato = new Contato("Roberto", "Carlos", telefones);
     }
 
     /**
@@ -23,7 +26,9 @@ public class ContatoTest {
      */
     @Test
     public void testContato() {
-        new Contato("Elis", "Regina", "2222-5852");
+        Telefone[] telefones = new Telefone[3];
+        telefones[0] = new Telefone(55, 88, "6565-9898", Telefone.TRABALHO);
+        new Contato("Elis", "Regina", telefones);
     }
 
     /**
@@ -31,7 +36,7 @@ public class ContatoTest {
      */
     @Test
     public void testToString(){
-        String toString = "Roberto Carlos - (88) 6565-6565";
+        String toString = "Roberto Carlos - +55 (88) 6565-9898 [TRABALHO] +55 (88) 3333-8888 [CELULAR]";
         Assert.assertEquals(toString, this.contato.toString());
     }
 

@@ -1,4 +1,5 @@
 import agenda.Agenda;
+import agenda.Telefone;
 
 import java.util.Scanner;
 
@@ -97,15 +98,48 @@ public class Menu {
             String nome = scanner.nextLine().trim();
             System.out.print("Sobrenome: ");
             String sobrenome = scanner.nextLine().trim();
-            System.out.print("Telefone: ");
-            String telefone = scanner.nextLine().trim();
+            Telefone[] telefones = Menu.adicionarTelefones(scanner);
 
-            if (agenda.cadastraContato(posicao,nome, sobrenome, telefone)){
+            if (agenda.cadastraContato(posicao,nome, sobrenome, telefones)){
                 System.out.println("CADASTRO REALIZADO!");
             }
         }catch (Exception exception){
             System.out.println("CADASTRO INVÁLIDO: " + exception.getMessage());
         }
+    }
+
+    /**
+     * Permite adicionar vários telefones no contato.
+     *
+     * @param scanner
+     * @return
+     */
+    private static Telefone[] adicionarTelefones(Scanner scanner){
+        Telefone[] telefones = new Telefone[3];
+        String opcao;
+        int qtdTelefone = 1;
+
+        do{
+            System.out.println("Telefone [" + qtdTelefone + "]: ");
+            System.out.print("Código País: ");
+            int codigoPais = scanner.nextInt();
+            scanner.nextLine();
+            System.out.print("DDD: ");
+            int ddd = scanner.nextInt();
+            scanner.nextLine();
+            System.out.print("Número: ");
+            String numero = scanner.nextLine().trim();
+            System.out.print("Tipo ([1] CELULAR, [2] TRABALHO, [3] CASA): ");
+            int tipo = scanner.nextInt();
+
+            System.out.print("Deseja adicionar outro telefone? [S]im ou [N]ão> ");
+
+            opcao = scanner.next().toUpperCase();
+            telefones[qtdTelefone - 1] = new Telefone(codigoPais, ddd, numero, tipo);
+            qtdTelefone++;
+        } while (!opcao.equals("N") && qtdTelefone < 4);
+
+        return telefones;
     }
 
     /**

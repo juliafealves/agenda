@@ -16,18 +16,21 @@ public class Contato {
     /**
      * Número de telefone.
      */
-    private String telefone;
+    private Telefone[] telefones;
 
     /**
      * Construtor principal do objeto contato.
+     *
      * @param nome Primeiro nome do contato.
      * @param sobrenome Sobrenome do contato.
-     * @param telefone Número do telefone.
+     * @param telefones Telefones de um contato podendo no máximo ter 3.
      */
-    public Contato(String nome, String sobrenome, String telefone) {
+    public Contato(String nome, String sobrenome, Telefone[] telefones) {
         this.nome = nome;
         this.sobrenome = sobrenome;
-        this.telefone = telefone;
+
+        this.telefones = new Telefone[3];
+        this.telefones = telefones;
     }
 
     /**
@@ -37,7 +40,15 @@ public class Contato {
      * @return String
      */
     public String toString(){
-        return this.nome + " " + this.sobrenome + " - " + this.telefone;
+        String telefones = "";
+
+        for(Telefone telefone: this.telefones){
+            if(telefone != null){
+                telefones += telefone.toString() + " ";
+            }
+        }
+
+        return this.nome + " " + this.sobrenome + " - " + telefones.trim();
     }
 
     /**
