@@ -1,4 +1,5 @@
 import agenda.Agenda;
+import agenda.Telefone;
 
 import java.util.Scanner;
 
@@ -12,9 +13,15 @@ public class Menu {
 
     /**
      * Método principal para execução do programa. Existe as seguintes opções:
+     *
      * (C)adastrar Contato - Cadastra um contato na agenda.
      * (L)istar Contatos - Lista todos os contatos de uma agenda.
      * (E)xibir Contato - Exibe um contato da agenda.
+     * (P)esquisar Contato Por Nome/Sobrenome - Pesquisa um contato(nome/sobrenome) através de uma palavra-chave.
+     * (B)uscar Contato - Busca um contato com nome exatamente igual.
+     * Listar Contatos por (N)ível de Amizade - Lista todos os contatos de um nível específico de amizade.
+     * (Q)uantidade por Nível de Amizade - Contabiliza o total de contatos de um nível de amizade específico.
+     * (M)édia de amizade - Calcula as médias de amizade de todos os contatos.
      * (S)air - Para Sair do programa.
      *
      * Os caracteres entre parenteses indicam a opção a ser escolhida. Ou seja, se digitar C é a opção escolhida
@@ -38,11 +45,113 @@ public class Menu {
                 Menu.listaContatos();
             }else if(opcao.equals("E")){
                 Menu.exibeContato(scanner);
+            }else if(opcao.equals("P")){
+                Menu.pesquisaContatoPorNome(scanner);
+            }else if(opcao.equals("B")){
+                Menu.buscarContato(scanner);
+            }else if(opcao.equals("N")){
+                Menu.listaContatosPorNivelAmizade(scanner);
+            }else if(opcao.equals("Q")) {
+                Menu.consultaQuantidadePorNivelAmizade(scanner);
+            }else if(opcao.equals("M")){
+                    Menu.listaMediasAmizade();
             } else if(!opcao.equals("S")) {
                 System.out.println("OPÇÃO INVÁLIDA!");
             }
 
         } while (!opcao.equals("S"));
+    }
+
+    /**
+     * Lista as médias de amizades dos contatos.
+     */
+    private static void listaMediasAmizade() {
+        System.out.println(agenda.listaMediasAmizade());
+    }
+
+    /**
+     * Consulta a quantidade de contatos de um determinado nível de amizade.
+     * @param scanner
+     */
+    private static void consultaQuantidadePorNivelAmizade(Scanner scanner) {
+        try {
+            System.out.print("Nivel de Amizade ([1] Distante, [2] Colega, [3] Amigo, [4] Amigão, [5] Irmão)> ");
+            scanner.nextLine();
+            int nivelAmizade = scanner.nextInt();
+            int quantidade = agenda.consultaQuantidadePorNivelAmizade(nivelAmizade);
+            System.out.println(quantidade + " contatos.");
+        }catch(Exception exception){
+            System.out.println(exception.getMessage());
+        }
+    }
+
+    /**
+     * Lista todos os contatos da agenda com um determinado nível de amizade.
+     * Poderá escolher: [1] Distante, [2] Colega, [3] Amigo, [4] Amigão, [5] Irmão.
+     *
+     * @param scanner Scanner
+     */
+    private static void listaContatosPorNivelAmizade(Scanner scanner) {
+        try {
+            System.out.print("Nivel de Amizade ([1] Distante, [2] Colega, [3] Amigo, [4] Amigão, [5] Irmão)> ");
+            scanner.nextLine();
+            int nivelAmizade = scanner.nextInt();
+
+            String contatos = agenda.listaContatoPorNivelAmizade(nivelAmizade);
+
+            if (!contatos.isEmpty()) {
+                System.out.println(contatos);
+            } else {
+                System.out.println("Nenhum contato encontrado com este nível de amizade.");
+            }
+        }catch(Exception exception){
+            System.out.println(exception.getMessage());
+        }
+    }
+
+    /**
+     * Busca um contato específico pelo nome.
+     * @param scanner
+     */
+    private static void buscarContato(Scanner scanner) {
+        try {
+            System.out.print("Nome> ");
+            scanner.nextLine();
+            String nome = scanner.nextLine().trim();
+
+            String contato = agenda.buscaContato(nome);
+
+            if (!contato.isEmpty()) {
+                System.out.println(contato);
+            } else {
+                System.out.println("Nenhum contato encontrado encontrado com o nome: " + nome);
+            }
+        }catch(Exception exception){
+            System.out.println(exception.getMessage());
+        }
+    }
+
+    /**
+     * Pesquisa os contatos da agenda pelo nome.
+     *
+     * @param scanner
+     */
+    private static void pesquisaContatoPorNome(Scanner scanner) {
+        try {
+            System.out.print("Palavra-chave> ");
+            scanner.nextLine();
+            String palavraChave = scanner.nextLine().trim();
+
+            String contatos = agenda.pesquisaNomeCompleto(palavraChave);
+
+            if (!contatos.isEmpty()) {
+                System.out.println(contatos);
+            } else {
+                System.out.println("Nenhum contato encontrado encontrado com a palavra-chave: " + palavraChave);
+            }
+        }catch(Exception exception){
+            System.out.println(exception.getMessage());
+        }
     }
 
     /**
@@ -97,15 +206,53 @@ public class Menu {
             String nome = scanner.nextLine().trim();
             System.out.print("Sobrenome: ");
             String sobrenome = scanner.nextLine().trim();
-            System.out.print("Telefone: ");
-            String telefone = scanner.nextLine().trim();
+            System.out.print("Nivel de Amizade ([1] Distante, [2] Colega, [3] Amigo, [4] Amigão, [5] Irmão): ");
+            int nivelAmizade = scanner.nextInt();
+            scanner.nextLine();
+            Telefone[] telefones = Menu.adicionarTelefones(scanner);
 
-            if (agenda.cadastraContato(posicao,nome, sobrenome, telefone)){
+            if (agenda.cadastraContato(posicao,nome, sobrenome, telefones, nivelAmizade)){
                 System.out.println("CADASTRO REALIZADO!");
             }
         }catch (Exception exception){
             System.out.println("CADASTRO INVÁLIDO: " + exception.getMessage());
         }
+    }
+
+    /**
+     * Permite adicionar vários telefones no contato.
+     *
+     * @param scanner
+     * @return
+     */
+    private static Telefone[] adicionarTelefones(Scanner scanner){
+        Telefone[] telefones = new Telefone[3];
+        String opcao = "S";
+        int qtdTelefone = 1;
+
+        do{
+            System.out.println("Telefone [" + qtdTelefone + "]: ");
+            System.out.print("Código País: ");
+            int codigoPais = scanner.nextInt();
+            scanner.nextLine();
+            System.out.print("DDD: ");
+            int ddd = scanner.nextInt();
+            scanner.nextLine();
+            System.out.print("Número: ");
+            String numero = scanner.nextLine().trim();
+            System.out.print("Tipo ([1] CELULAR, [2] TRABALHO, [3] CASA): ");
+            int tipo = scanner.nextInt();
+
+            telefones[qtdTelefone - 1] = new Telefone(codigoPais, ddd, numero, tipo);
+            qtdTelefone++;
+
+            if (qtdTelefone < 4) {
+                System.out.print("Deseja adicionar outro telefone? [S]im ou [N]ão> ");
+                opcao = scanner.next().toUpperCase();
+            }
+        } while (!opcao.equals("N") && qtdTelefone < 4);
+
+        return telefones;
     }
 
     /**
@@ -118,7 +265,9 @@ public class Menu {
      */
     private static void exibeMenu(){
         String menu = System.lineSeparator();
-        String[] opcoes = {"(C)adastrar Contato", "(L)istar Contatos", "(E)xibir Contato", "(S)air"};
+        String[] opcoes = {"(C)adastrar Contato", "(L)istar Contatos", "(E)xibir Contato",
+                "(P)esquisar Contato Por Nome/Sobrenome", "(B)uscar Contato", "Listar Contatos por (N)ível de Amizade",
+                "(Q)uantidade por Nível de Amizade", "(M)édia de amizade", "(S)air"};
 
         for(String opcao: opcoes){
             menu += opcao + System.lineSeparator();
