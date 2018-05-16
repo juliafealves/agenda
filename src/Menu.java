@@ -43,11 +43,37 @@ public class Menu {
                 Menu.pesquisaContatoPorNome(scanner);
             }else if(opcao.equals("B")){
                 Menu.buscarContato(scanner);
+            }else if(opcao.equals("N")){
+                Menu.listaContatosPorNivelAmizade(scanner);
             } else if(!opcao.equals("S")) {
                 System.out.println("OPÇÃO INVÁLIDA!");
             }
 
         } while (!opcao.equals("S"));
+    }
+
+    /**
+     * Lista todos os contatos da agenda com um determinado nível de amizade.
+     * Poderá escolher: [1] Distante, [2] Colega, [3] Amigo, [4] Amigão, [5] Irmão.
+     *
+     * @param scanner Scanner
+     */
+    private static void listaContatosPorNivelAmizade(Scanner scanner) {
+        try {
+            System.out.print("Nivel de Amizade ([1] Distante, [2] Colega, [3] Amigo, [4] Amigão, [5] Irmão)> ");
+            scanner.nextLine();
+            int nivelAmizade = scanner.nextInt();
+
+            String contatos = agenda.listaContatoPorNivelAmizade(nivelAmizade);
+
+            if (!contatos.isEmpty()) {
+                System.out.println(contatos);
+            } else {
+                System.out.println("Nenhum contato encontrado encontrado com o este nível de amizade.");
+            }
+        }catch(Exception exception){
+            System.out.println(exception.getMessage());
+        }
     }
 
     /**
@@ -207,7 +233,8 @@ public class Menu {
     private static void exibeMenu(){
         String menu = System.lineSeparator();
         String[] opcoes = {"(C)adastrar Contato", "(L)istar Contatos", "(E)xibir Contato",
-                "(P)esquisar Contato Por Nome/Sobrenome", "(B)uscar Contato", "(S)air"};
+                "(P)esquisar Contato Por Nome/Sobrenome", "(B)uscar Contato", "Listar Contatos por (N)ível de Amizade",
+                "(S)air"};
 
         for(String opcao: opcoes){
             menu += opcao + System.lineSeparator();

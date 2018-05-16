@@ -267,4 +267,24 @@ public class AgendaTest {
         this.agenda.cadastraContato(20, "Zé", "Ramalho", this.telefones, Contato.AMIGAO);
         this.agenda.pesquisaNomeCompleto(null);
     }
+
+    /**
+     * Verifica se a listagem de contatos por nível de amizado está correta.
+     */
+    @Test
+    public void testListaPorNivelAmizade(){
+        this.agenda.cadastraContato(10, "Elba", "Ramalho", this.telefones, Contato.AMIGAO);
+        this.agenda.cadastraContato(20, "Zé", "Ramalho", this.telefones, Contato.COLEGA);
+
+        String busca = "10 - Elba Ramalho" + System.lineSeparator();
+        Assert.assertEquals(busca, this.agenda.listaContatoPorNivelAmizade(Contato.AMIGAO));
+    }
+
+    /**
+     * Verifica se ocorre erro ao listar contatos por nível de amizade inválido. Um nível de amizade válido é de 1 a 5.
+     */
+    @Test (expected = IllegalArgumentException.class)
+    public void testListaPorNivelAmizadeInvalido(){
+        this.agenda.listaContatoPorNivelAmizade(10);
+    }
 }

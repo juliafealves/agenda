@@ -97,4 +97,12 @@ public class Contato {
     public String getNome() {
         return this.nome;
     }
+
+    /**
+     * Retorna o nível de amizade de um contato.
+     * @return
+     */
+    public int getNivelAmizade() {
+        return this.nivelAmizade;
+    }
 }

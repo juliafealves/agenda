@@ -142,4 +142,25 @@ public class Agenda {
 
         return "";
     }
+
+    /**
+     * Lista todos os contatos de um nível de amizade específico.
+     * @param nivelAmizade Nível de amizade 1: distante, 2: colega, 3: amigo, 4: amigão, 5: irmão.
+     *
+     * @return
+     */
+    public String listaContatoPorNivelAmizade(int nivelAmizade) {
+        if(nivelAmizade < 1 || nivelAmizade > 5)
+            throw new IllegalArgumentException("Nível de amizade inválido.");
+
+        String contatos = "";
+
+        for(int i = 0; i < this.contatos.length; i++){
+            if(this.contatos[i] != null && this.contatos[i].getNivelAmizade() == nivelAmizade){
+                contatos += (i + 1) + " - " + this.contatos[i].getNomeCompleto() + System.lineSeparator();
+            }
+        }
+
+        return contatos;
+    }
 }
