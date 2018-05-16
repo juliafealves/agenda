@@ -184,4 +184,29 @@ public class Agenda {
 
         return quantidade;
     }
+
+    /**
+     * Retona as médias de amizade dos contatos.
+     * @return
+     */
+    public String listaMediasAmizade() {
+        String medias = "";
+        int totalContatos = 0;
+
+        for(Contato contato: this.contatos){
+            if(contato != null)
+                totalContatos++;
+        }
+
+        for(int nivel = 1; nivel <= 5; nivel++){
+            String media = "0,0";
+
+            if(totalContatos > 0)
+                media = String.format("%.1f", (float) this.consultaQuantidadePorNivelAmizade(nivel)/totalContatos);
+
+            medias += Contato.obterNivelAmizade(nivel) + ": " + media + " contato(s)." + System.lineSeparator();
+        }
+
+        return medias;
+    }
 }

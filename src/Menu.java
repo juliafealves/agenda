@@ -13,9 +13,15 @@ public class Menu {
 
     /**
      * Método principal para execução do programa. Existe as seguintes opções:
+     *
      * (C)adastrar Contato - Cadastra um contato na agenda.
      * (L)istar Contatos - Lista todos os contatos de uma agenda.
      * (E)xibir Contato - Exibe um contato da agenda.
+     * (P)esquisar Contato Por Nome/Sobrenome - Pesquisa um contato(nome/sobrenome) através de uma palavra-chave.
+     * (B)uscar Contato - Busca um contato com nome exatamente igual.
+     * Listar Contatos por (N)ível de Amizade - Lista todos os contatos de um nível específico de amizade.
+     * (Q)uantidade por Nível de Amizade - Contabiliza o total de contatos de um nível de amizade específico.
+     * (M)édia de amizade - Calcula as médias de amizade de todos os contatos.
      * (S)air - Para Sair do programa.
      *
      * Os caracteres entre parenteses indicam a opção a ser escolhida. Ou seja, se digitar C é a opção escolhida
@@ -45,13 +51,22 @@ public class Menu {
                 Menu.buscarContato(scanner);
             }else if(opcao.equals("N")){
                 Menu.listaContatosPorNivelAmizade(scanner);
-            }else if(opcao.equals("Q")){
+            }else if(opcao.equals("Q")) {
                 Menu.consultaQuantidadePorNivelAmizade(scanner);
+            }else if(opcao.equals("M")){
+                    Menu.listaMediasAmizade();
             } else if(!opcao.equals("S")) {
                 System.out.println("OPÇÃO INVÁLIDA!");
             }
 
         } while (!opcao.equals("S"));
+    }
+
+    /**
+     * Lista as médias de amizades dos contatos.
+     */
+    private static void listaMediasAmizade() {
+        System.out.println(agenda.listaMediasAmizade());
     }
 
     /**
@@ -252,7 +267,7 @@ public class Menu {
         String menu = System.lineSeparator();
         String[] opcoes = {"(C)adastrar Contato", "(L)istar Contatos", "(E)xibir Contato",
                 "(P)esquisar Contato Por Nome/Sobrenome", "(B)uscar Contato", "Listar Contatos por (N)ível de Amizade",
-                "(Q)uantidade por Nível de Amizade", "(S)air"};
+                "(Q)uantidade por Nível de Amizade", "(M)édia de amizade", "(S)air"};
 
         for(String opcao: opcoes){
             menu += opcao + System.lineSeparator();

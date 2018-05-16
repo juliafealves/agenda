@@ -307,4 +307,19 @@ public class AgendaTest {
     public void testConsultaQuantidadePorNivelAmizadeInvalido(){
         this.agenda.consultaQuantidadePorNivelAmizade(10);
     }
+
+    /**
+     * Verifica se a média de amizade dos contatos da agenda.
+     * Obs.: Talvez o teste falhe devido o S.O ser pt-br o que aceita "," como separado decimal.
+     */
+    @Test
+    public void testConsultaMediaAmizade(){
+        this.agenda.cadastraContato(10, "Milton", "Nascimento", this.telefones, Contato.AMIGAO);
+        this.agenda.cadastraContato(20, "Renato", "Russo", this.telefones, Contato.AMIGAO);
+
+        String contatos = "Distante: 0,0 contato(s)." + System.lineSeparator() + "Colega: 0,0 contato(s)." +
+                System.lineSeparator() + "Amigo: 0,0 contato(s)." + System.lineSeparator() + "Amigão: 1,0 contato(s)." +
+                System.lineSeparator() + "Irmão: 0,0 contato(s)." + System.lineSeparator();
+        Assert.assertEquals(contatos, this.agenda.listaMediasAmizade());
+    }
 }

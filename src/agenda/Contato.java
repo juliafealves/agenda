@@ -105,4 +105,24 @@ public class Contato {
     public int getNivelAmizade() {
         return this.nivelAmizade;
     }
+
+    /**
+     * Retorna a string referente ao nível de amizade.
+     *
+     * @param nivelAmizade
+     * @return
+     */
+    public static String obterNivelAmizade(int nivelAmizade){
+        if(nivelAmizade == Contato.DISTANTE){
+            return "Distante";
+        } else if(nivelAmizade == Contato.COLEGA){
+            return "Colega";
+        } else if(nivelAmizade == Contato.AMIGO){
+            return "Amigo";
+        } else if(nivelAmizade == Contato.AMIGAO){
+            return "Amigão";
+        }
+
+        return "Irmão";
+    }
 }
