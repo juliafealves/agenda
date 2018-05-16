@@ -163,4 +163,25 @@ public class Agenda {
 
         return contatos;
     }
+
+    /**
+     * Contabiliza a quantidade de contatos com determinado nível de amizade.
+     *
+     * @param nivelAmizade Nível de amizade 1: distante, 2: colega, 3: amigo, 4: amigão, 5: irmão.
+     * @return
+     */
+    public int consultaQuantidadePorNivelAmizade(int nivelAmizade) {
+        if(nivelAmizade < 1 || nivelAmizade > 5)
+            throw new IllegalArgumentException("Nível de amizade inválido.");
+
+        int quantidade = 0;
+
+        for(Contato contato: this.contatos){
+            if(contato != null && contato.getNivelAmizade() == nivelAmizade){
+                quantidade++;
+            }
+        }
+
+        return quantidade;
+    }
 }

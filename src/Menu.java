@@ -45,11 +45,29 @@ public class Menu {
                 Menu.buscarContato(scanner);
             }else if(opcao.equals("N")){
                 Menu.listaContatosPorNivelAmizade(scanner);
+            }else if(opcao.equals("Q")){
+                Menu.consultaQuantidadePorNivelAmizade(scanner);
             } else if(!opcao.equals("S")) {
                 System.out.println("OPÇÃO INVÁLIDA!");
             }
 
         } while (!opcao.equals("S"));
+    }
+
+    /**
+     * Consulta a quantidade de contatos de um determinado nível de amizade.
+     * @param scanner
+     */
+    private static void consultaQuantidadePorNivelAmizade(Scanner scanner) {
+        try {
+            System.out.print("Nivel de Amizade ([1] Distante, [2] Colega, [3] Amigo, [4] Amigão, [5] Irmão)> ");
+            scanner.nextLine();
+            int nivelAmizade = scanner.nextInt();
+            int quantidade = agenda.consultaQuantidadePorNivelAmizade(nivelAmizade);
+            System.out.println(quantidade + " contatos.");
+        }catch(Exception exception){
+            System.out.println(exception.getMessage());
+        }
     }
 
     /**
@@ -69,7 +87,7 @@ public class Menu {
             if (!contatos.isEmpty()) {
                 System.out.println(contatos);
             } else {
-                System.out.println("Nenhum contato encontrado encontrado com o este nível de amizade.");
+                System.out.println("Nenhum contato encontrado com este nível de amizade.");
             }
         }catch(Exception exception){
             System.out.println(exception.getMessage());
@@ -234,7 +252,7 @@ public class Menu {
         String menu = System.lineSeparator();
         String[] opcoes = {"(C)adastrar Contato", "(L)istar Contatos", "(E)xibir Contato",
                 "(P)esquisar Contato Por Nome/Sobrenome", "(B)uscar Contato", "Listar Contatos por (N)ível de Amizade",
-                "(S)air"};
+                "(Q)uantidade por Nível de Amizade", "(S)air"};
 
         for(String opcao: opcoes){
             menu += opcao + System.lineSeparator();
